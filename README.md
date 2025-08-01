@@ -59,8 +59,6 @@ You can find these in the Supabase dashboard under **Project Settings > API**.
 npm run dev
 ```
 
-Then visit [http://localhost:3000](http://localhost:3000) in your browser.
-
 ---
 
 ## 🧠 How It Works
