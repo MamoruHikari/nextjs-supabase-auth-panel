@@ -1,12 +1,12 @@
 # Next.js + Supabase Auth Panel
 
-A modern user authentication and management panel built using **Next.js**, **Supabase**, **React**, and **PostgreSQL**. This project is based on a ready-to-use Next.js + Supabase boilerplate and serves as an admin panel to manage users.
+A modern user authentication and management panel built using **Next.js**, **Supabase**, **Material UI**, and **PostgreSQL**. This project is based on a ready-to-use Next.js + Supabase boilerplate and serves as an admin panel to manage users.
 
 ## 🛠 Tech Stack
 
 - **Next.js** – React-based framework for fast and modern web apps.
 - **Supabase** – Backend-as-a-service for authentication, database (PostgreSQL), and API.
-- **React** – For building UI components.
+- **Material UI** – For building UI components.
 - **PostgreSQL** – The relational database powering Supabase.
 - **Supabase Auth** – Handles secure user sign-up, login, and session management.
 - **Supabase Database** – Used to store additional user info via the `users` table.
