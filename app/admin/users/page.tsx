@@ -26,7 +26,7 @@ import {
   Box,
   Stack,
   Fade,
-  Button,
+  Button, // ✅ Added
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import BlockIcon from "@mui/icons-material/Block";
@@ -41,7 +41,9 @@ type User = {
   status: string;
 };
 
-const statusColor = (status: string) => {
+const statusColor = (
+  status: string
+): "success" | "error" | "warning" | "default" => {
   switch (status) {
     case "active":
       return "success";
@@ -324,7 +326,7 @@ export default function UserListPage() {
                         <TableCell>
                           <Chip
                             label={user.status}
-                            color={statusColor(user.status) as any}
+                            color={statusColor(user.status)}
                             variant="outlined"
                             size="small"
                             sx={{ textTransform: "capitalize" }}
