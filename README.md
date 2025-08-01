@@ -1,14 +1,3 @@
-Sure! Here's a clean, professional `README.md` tailored to **Task 4** requirements that:
-
-* Documents how the project works
-* Describes the tech used: `Next.js`, `Supabase`, `PostgreSQL`, and `React`
-* Mentions that the project was based on a boilerplate
-* Explains how to start the app
-* Omits project structure
-
----
-
-````markdown
 # Next.js + Supabase Auth Panel
 
 A modern user authentication and management panel built using **Next.js**, **Supabase**, **React**, and **PostgreSQL**. This project is based on a ready-to-use Next.js + Supabase boilerplate and serves as an admin panel to manage users.
