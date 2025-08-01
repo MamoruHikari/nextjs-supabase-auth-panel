@@ -109,7 +109,3 @@ npm run dev
 ## 📝 License
 
 MIT License
-
----
-
-Let me know if you want to **include optional instructions for Supabase SQL setup or database triggers**, or if you're preparing this for **a code demo/video**, and I can help you tailor the README even further.
