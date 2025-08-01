@@ -1,9 +1,3 @@
-Great start on the README — it's already clear and well-formatted. But as you pointed out, it’s missing several **key features** from the task list, especially the functional highlights like table sorting, multi-user actions, admin protections, and edge case handling.
-
-Here’s an improved version of your README that **covers all requested features** while keeping things clean and readable:
-
----
-
 # Next.js + Supabase Auth Panel
 
 A modern user authentication and management panel built using **Next.js**, **Supabase**, **Material UI**, and **PostgreSQL**. This project extends a ready-to-use Next.js + Supabase boilerplate and provides a fully functional admin dashboard to manage users securely and efficiently.
@@ -50,8 +44,8 @@ A modern user authentication and management panel built using **Next.js**, **Sup
 ✅ **Data Updates**
 
 * `Block`: Updates `status` to `"blocked"` in `public.users`
-* `Unblock`: Sets `status` to `"active"`
-* `Delete`: Removes from `public.users` and optionally from `auth.users` using Supabase Admin API
+* `Unblock`: Sets `status` to `"active"` in `public.users`
+* `Delete`: Removes from `public.users` and from `auth.users` using Supabase Admin API
 
 ✅ **Edge Case Handling**
 
@@ -98,8 +92,6 @@ SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 npm run dev
 ```
 
-Visit `http://localhost:3000` to see the app.
-
 ---
 
 ## 🧠 How It Works
@@ -114,17 +106,9 @@ Visit `http://localhost:3000` to see the app.
 
 ---
 
-## 🧪 Testing & Deployment
-
-* All flows tested: registration, login, logout, block/unblock/delete actions, and UI responsiveness.
-* Works seamlessly on desktop and mobile.
-* Ready to deploy on **Vercel**, **Netlify**, or **Render**.
-
----
-
 ## 📝 License
 
-MIT License.
+MIT License
 
 ---
 
