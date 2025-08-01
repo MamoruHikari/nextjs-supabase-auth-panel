@@ -11,8 +11,6 @@ A modern user authentication and management panel built using **Next.js**, **Sup
 - **Supabase Auth** – Handles secure user sign-up, login, and session management.
 - **Supabase Database** – Used to store additional user info via the `users` table.
 
-> **Note**: This project does **not** use Tailwind CSS or any other CSS framework.
-
 ---
 
 ## 📦 Features
