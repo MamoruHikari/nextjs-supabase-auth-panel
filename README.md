@@ -4,6 +4,11 @@ A modern user authentication and management panel built using **Next.js**, **Sup
 
 ---
 
+🚀 **Live App:** 👉 [Click here to visit the deployed site](https://your-app-name.onrender.com)  
+⚠️ *Note: The app may take up to 60 seconds to load on first visit due to Render's free tier cold start.*
+
+---
+
 ## 🛠 Tech Stack
 
 * **Next.js** – React-based framework with SSR and App Router.
