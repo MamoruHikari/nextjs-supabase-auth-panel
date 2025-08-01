@@ -4,7 +4,7 @@ A modern user authentication and management panel built using **Next.js**, **Sup
 
 ---
 
-🚀 **Live App:** 👉 [Click here to visit the deployed site](https://your-app-name.onrender.com)  
+🚀 **Live App:** 👉 [Click here](https://nextjs-supabase-auth-panel.onrender.com)  
 ⚠️ *Note: The app may take up to 60 seconds to load on first visit due to Render's free tier cold start.*
 
 ---
