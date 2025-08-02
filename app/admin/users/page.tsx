@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import {
   blockUsers,
   unblockUsers,
@@ -56,6 +57,26 @@ const statusColor = (
   }
 };
 
+async function checkIfBlockedAndKick(
+  supabase: SupabaseClient,
+  router: ReturnType<typeof useRouter>,
+  currentUserId: string | null
+) {
+  if (!currentUserId) return false;
+  const { data } = await supabase
+    .from("users")
+    .select("status")
+    .eq("id", currentUserId)
+    .single();
+
+  if (data?.status === "blocked") {
+    await supabase.auth.signOut();
+    router.push("/auth/login");
+    return true;
+  }
+  return false;
+}
+
 export default function UserListPage() {
   const supabase = createClient();
   const router = useRouter();
@@ -65,7 +86,7 @@ export default function UserListPage() {
   const [selected, setSelected] = useState<string[]>([]);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     const { data: authData } = await supabase.auth.getUser();
     setCurrentUserId(authData?.user?.id ?? null);
 
@@ -76,40 +97,52 @@ export default function UserListPage() {
 
     if (error) {
       console.error("Error fetching users:", error);
+      setUsers([]);
     } else {
       setUsers(data || []);
+      const user = (data || []).find((u) => u.id === authData?.user?.id);
+      if (user?.status === "blocked") {
+        await supabase.auth.signOut();
+        router.push("/auth/login");
+        return;
+      }
     }
-
     setLoading(false);
-  };
+  }, [supabase, router]);
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     await supabase.auth.signOut();
     router.push("/auth/login");
-  };
+  }, [supabase, router]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
-  const handleSelect = (id: string) => {
-    setSelected((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
-  };
+  const handleSelect = useCallback(
+    async (id: string) => {
+      if (await checkIfBlockedAndKick(supabase, router, currentUserId)) return;
+      setSelected((prev) =>
+        prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+      );
+    },
+    [supabase, router, currentUserId]
+  );
 
   const allSelected = users.length > 0 && selected.length === users.length;
   const someSelected = selected.length > 0 && selected.length < users.length;
 
-  const handleSelectAll = () => {
+  const handleSelectAll = useCallback(async () => {
+    if (await checkIfBlockedAndKick(supabase, router, currentUserId)) return;
     if (allSelected) {
       setSelected([]);
     } else {
       setSelected(users.map((user) => user.id));
     }
-  };
+  }, [supabase, router, currentUserId, allSelected, users]);
 
-  const handleBlock = async () => {
+  const handleBlock = useCallback(async () => {
+    if (await checkIfBlockedAndKick(supabase, router, currentUserId)) return;
     const res = await blockUsers(selected, currentUserId || undefined);
     if (res?.error) {
       alert("Failed to block users: " + res.error.message);
@@ -123,9 +156,10 @@ export default function UserListPage() {
         router.push("/auth/login");
       }
     }
-  };
+  }, [supabase, router, currentUserId, selected, fetchData]);
 
-  const handleUnblock = async () => {
+  const handleUnblock = useCallback(async () => {
+    if (await checkIfBlockedAndKick(supabase, router, currentUserId)) return;
     const res = await unblockUsers(selected);
     if (res?.error) {
       alert("Failed to unblock users: " + res.error.message);
@@ -134,9 +168,10 @@ export default function UserListPage() {
       await fetchData();
       setSelected([]);
     }
-  };
+  }, [supabase, router, currentUserId, selected, fetchData]);
 
-  const handleDelete = async () => {
+  const handleDelete = useCallback(async () => {
+    if (await checkIfBlockedAndKick(supabase, router, currentUserId)) return;
     const res = await deleteUsers(selected, currentUserId || undefined);
     if (res?.error) {
       alert("Failed to delete users: " + res.error.message);
@@ -150,7 +185,7 @@ export default function UserListPage() {
         router.push("/auth/login");
       }
     }
-  };
+  }, [supabase, router, currentUserId, selected, fetchData]);
 
   const TableToolbar = () => (
     <Toolbar
@@ -261,7 +296,9 @@ export default function UserListPage() {
                       <Checkbox
                         indeterminate={someSelected}
                         checked={allSelected}
-                        onChange={handleSelectAll}
+                        onChange={async () => {
+                          await handleSelectAll();
+                        }}
                         inputProps={{ "aria-label": "select all users" }}
                       />
                     </TableCell>
@@ -289,7 +326,9 @@ export default function UserListPage() {
                           },
                           transition: "background 0.2s",
                         }}
-                        onClick={() => handleSelect(user.id)}
+                        onClick={async () => {
+                          await handleSelect(user.id);
+                        }}
                       >
                         <TableCell sx={{ width: 48, pl: 1 }}>
                           <Checkbox
@@ -299,7 +338,10 @@ export default function UserListPage() {
                             inputProps={{
                               "aria-labelledby": `user-checkbox-${user.id}`,
                             }}
-                            onChange={() => handleSelect(user.id)}
+                            onChange={async (e) => {
+                              e.stopPropagation();
+                              await handleSelect(user.id);
+                            }}
                             onClick={(e) => e.stopPropagation()}
                           />
                         </TableCell>
