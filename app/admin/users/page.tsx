@@ -69,7 +69,7 @@ async function checkIfBlockedAndKick(
     .eq("id", currentUserId)
     .single();
 
-  if (data?.status === "blocked") {
+  if (!data || data.status === "blocked") {
     await supabase.auth.signOut();
     router.push("/auth/login");
     return true;
@@ -101,7 +101,7 @@ export default function UserListPage() {
     } else {
       setUsers(data || []);
       const user = (data || []).find((u) => u.id === authData?.user?.id);
-      if (user?.status === "blocked") {
+      if (!user || user.status === "blocked") {
         await supabase.auth.signOut();
         router.push("/auth/login");
         return;
